@@ -80,4 +80,9 @@ The web app is divided into two main sections:
 - Enhance the similarity recommendation system with additional features.
 - Add more detailed artist information and multimedia content.
 
+## Image Data Source
+
+The dataset used for training the art style classification model is sourced from Kaggle:
+
+- **Best Artworks of All Time**: [Kaggle Dataset](https://www.kaggle.com/datasets/ikarus777/best-artworks-of-all-time)
 Explore the world of art with the ArtStyle & Artists WebApp! Feel free to contribute or provide feedback.
