@@ -1,129 +1,83 @@
-# Project: ArtStyle HIstorian
+# ArtStyle & Artists WebApp
 
 <img src="assets/gogh.png" alt="workflow" width="70%">
 
-Recommendation systems are becoming increasingly important in today’s extremely busy world. People are always short on time with the myriad tasks they need to accomplish in the limited 24 hours. Therefore, the recommendation systems are important as they help them make the right choices, without having to expend their cognitive resources.
 
-The purpose of a recommendation system basically is to search for content that would be interesting to an individual. Moreover, it involves a number of factors to create personalised lists of useful and interesting content specific to each user/individual. Recommendation systems are Artificial Intelligence based algorithms that skim through all possible options and create a customized list of items that are interesting and relevant to an individual. These results are based on their profile, search/browsing history, what other people with similar traits/demographics are watching, and how likely are you to watch those movies. This is achieved through predictive modeling and heuristics with the data available.
+Welcome to the ArtStyle & Artists WebApp! This project showcases my skills in PyTorch and NLP by leveraging machine learning and data science techniques to identify art styles from images and provide information about artists along with recommendations of similar artists.
 
-# Types of Recommendation System :
+## Overview
 
-### 1 ) Content Based :
+The web app is divided into two main sections:
 
-- Content-based systems, which use characteristic information and takes item attriubutes into consideration .
+1. **ArtStyle**: Upload an image of a painting, and the app identifies the artistic style. Detailed information about the identified art style is provided.
+2. **Artists**: Get information about various artists, including their biographies and images, and receive recommendations of similar artists.
 
-- Twitter , Youtube .
+## Technologies Used
 
-- Which music you are listening , what singer are you watching . Form embeddings for the features .
-	
-- User specific actions or similar items reccomendation .
-	
-- It will create a vector of it .
-	
-- These systems make recommendations using a user's item and profile features. They hypothesize that if a user was interested in an item in the past, they will once again be interested in it in the future
-	
-- One issue that arises is making obvious recommendations because of excessive specialization (user A is only interested in categories B, C, and D, and the system is not able to recommend items outside those categories, even though they could be interesting to them).
+- **Streamlit**: For building and sharing data applications.
+- **PyTorch**: For deep learning model implementation.
+- **timm**: For utilizing pretrained image models.
+- **Pandas**: For data manipulation.
+- **Requests**: For making HTTP requests.
+- **scikit-learn**: For machine learning tasks.
 
-### 2 ) Collaborative Based :
-		
-- Collaborative filtering systems, which are based on user-item interactions.
-	
-- Clusters of users with same ratings , similar users .
-	
-- Book recommendation , so use cluster mechanism .
-	
-- We take only one parameter , ratings or comments .
-	
-- In short, collaborative filtering systems are based on the assumption that if a user likes item A and another user likes the same item A as well as another item, item B, the first user could also be interested in the second item . 
-	
-- Issues are :
+## Machine Learning Algorithms
 
-	- User-Item nXn matrix , so computationally expensive .
+### ArtStyle Section
 
-	- Only famous items will get reccomended .
+1. **Model Architecture**:
+    - Uses a custom neural network based on the EfficientNet-B0 architecture.
+    - Classifies images into one of 12 art styles: Symbolism, Surrealism, Supermatism, Romanticism, Renaissance, Primitivism, Post-Impressionism, Pop Art, Impressionism, Expressionism, Cubism, and Baroque.
 
-	- New items might not get reccomended at all .   
+2. **Training**:
+    - The base model is pretrained on ImageNet.
+    - A new classification head is added and fine-tuned for art style classification.
+    - The model is trained using the Adam optimizer and CrossEntropyLoss criterion.
 
-### 3 ) Hybrid Based :
-	
-- Hybrid systems, which combine both types of information with the aim of avoiding problems that are generated when working with just one kind.
+3. **Inference**:
+    - Preprocesses uploaded images and predicts the art style using the trained model.
+    - Fetches information about the predicted art style from a CSV file.
 
-- Combination of both and used now a days .
+### Artists Section
 
-- Uses : word2vec , embedding .           
+1. **Similarity Recommendation**:
+    - Uses a cosine similarity matrix to recommend similar artists based on a selected artist.
+    - The similarity matrix is computed using a CountVectorizer on artist tags.
 
-# About this project:
+2. **Fetching Artist Information**:
+    - Fetches information from a CSV file.
+    - Additional details are retrieved from Wikipedia using the Wikipedia API.
 
-This is a streamlit web application that can recommend various kinds of similar movies based on an user interest.
-here is a demo,
+## How to Run
 
-* [Click here to run it live on server](https://)
+1. Clone the repository:
+    ```bash
+    git clone https://github.com/yourusername/artstyle-artists-webapp.git
+    cd artstyle-artists-webapp
+    ```
 
+2. Install the required packages:
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-# Demo:
+3. Run the Streamlit app:
+    ```bash
+    streamlit run app.py
+    ```
 
-<img src="" alt="workflow" width="70%">
+## Project Structure
 
-<img src="/" alt="workflow" width="70%">
+- `app.py`: The main Streamlit app file.
+- `data/`: Contains CSV files with art style and artist information.
+- `artifacts/`: Contains the trained model and similarity matrix.
+- `assets/`: Contains image assets used in the app.
+- `dataset/`: Contains training, validation, and test datasets.
 
-<img src="/" alt="workflow" width="70%">
+## Future Improvements
 
+- Expand the model to recognize more art styles.
+- Enhance the similarity recommendation system with additional features.
+- Add more detailed artist information and multimedia content.
 
-# Dataset has been used:
-
-* [Dataset link](https://www.kaggle.com/datasets/ikarus777/best-artworks-of-all-time)
-
-# Concept used to build the model.pkl file : cosine_similarity
-
-1 . Cosine Similarity is a metric that allows you to measure the similarity of the documents.
-
-2 . In order to demonstrate cosine similarity function we need vectors. Here vectors are numpy array.
-
-3 . Finally, Once we have vectors, We can call cosine_similarity() by passing both vectors. It will calculate the cosine similarity between these two.
-
-4 . It will be a value between [0,1]. If it is 0 then both vectors are complete different. But in the place of that if it is 1, It will be completely similar.
-
-5 . For more details , check URL : https://www.learndatasci.com/glossary/cosine-similarity/
-
-# How to run?
-### STEPS:
-
-Clone the repository
-
-```bash
-https://github.com/dooinn/art_style_classifier.git
-```
-### STEP 01- Create a conda environment after opening the repository
-
-```bash
-conda create -n art python=3.11 -y
-```
-
-```bash
-conda activate art
-```
-
-
-### STEP 02- install the requirements
-```bash
-pip install -r requirements.txt
-```
-
-
-```bash
-#run this file to generate the models
-
-modelling.ipynb
-```
-
-Now run,
-```bash
-streamlit run app.py
-```
-
-
-```bash
-Author: Dooinn
-Email: kimdooinn1@gmail.com
-
-```
+Explore the world of art with the ArtStyle & Artists WebApp! Feel free to contribute or provide feedback.

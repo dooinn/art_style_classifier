@@ -27,7 +27,7 @@ class SimpleArtClassifer(nn.Module):
 @st.cache_data
 def load_model():
     model = SimpleArtClassifer(num_classes=12)
-    model.load_state_dict(torch.load('notebook/model.pth', map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load('artifacts/model.pth', map_location=torch.device('cpu')))
     model.eval()
     return model
 
@@ -55,20 +55,10 @@ def predict(image):
 
 
 
-
-
-
-
-
-
-
-
-# File uploader in the sidebar
 uploaded_file = st.sidebar.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
 if uploaded_file is not None:
     image = Image.open(uploaded_file)
-    # Display the uploaded image in the sidebar
     st.sidebar.image(image, caption='Uploaded Image.', use_column_width=True)
     st.write("The Predicted result is...")
     predicted_idx = predict(uploaded_file)
@@ -76,12 +66,10 @@ if uploaded_file is not None:
     predicted_class = class_names[predicted_idx]
     st.title(f"{predicted_class}")
 
-    # Display style information in the main area
     style_info = style_data[style_data['style'] == predicted_class].iloc[0]
     st.write(f"{style_info['description']}")
     st.write(f"More Info: [Wikipedia]({style_info['wiki_url']})")
 else:
-    # Only show the landing image if no image has been uploaded
     st.title('ArtStyle Predictor')
     st.subheader('Upload an image of a painting into the image uploader in the sidebar to discover its artistic style!')
     st.write("ArtStyle Predictor is your personal art historian. If you're unsure about the era or the artistic style of a painting, the ArtStyle Predictor will identify it for you, providing detailed explanations about the art style!")

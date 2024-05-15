@@ -3,27 +3,28 @@ import pandas as pd
 import pickle
 import requests
 
-# Load the artist data and cosine similarity matrix
-artists = pd.read_csv('data/artists.csv')
-cosine_sim = pickle.load(open('notebook/similarity.pkl', 'rb'))
 
-# Function to get recommendations
+artists = pd.read_csv('data/artists.csv')
+cosine_sim = pickle.load(open('artifacts/similarity.pkl', 'rb'))
+
+
 def recommend(artist_name):
     artist_idx = artists.index[artists['name'] == artist_name].tolist()[0]
     sim_scores = list(enumerate(cosine_sim[artist_idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_indices = [i[0] for i in sim_scores[1:5]]  # Retrieve top 4 recommendations
+    sim_indices = [i[0] for i in sim_scores[1:5]] 
     recommended_artists = artists['name'].iloc[sim_indices].tolist()
     return recommended_artists
 
-# Function to fetch artist information from Wikipedia API
+
 def get_artist_info(artist_name):
     artist_row = artists.loc[artists['name'] == artist_name].iloc[0]
     URL = "https://en.wikipedia.org/w/api.php"
     params = {
         "action": "query",
         "titles": artist_row['name'],
-        "prop": "extracts|pageimages",
+        "prop": "extracts|pageimages|info",
+        "inprop": "url",
         "format": "json",
         "exintro": True,
         "explaintext": True,
@@ -38,25 +39,11 @@ def get_artist_info(artist_name):
     info = {
         'title': page['title'],
         'extract': page['extract'],
-        'image': image_url
+        'image': image_url,
+        'full_url': page.get('fullurl', '#')  
     }
     return info
 
-def show_artist_info(artist_name):
-    artist_info = get_artist_info(artist_name)
-    if artist_info:
-        st.title(artist_name)
-        cols = st.columns(2)  # Creates two columns
-        with cols[0]:  # Left column for the image
-            if artist_info['image'] != 'No image available':
-                st.image(artist_info['image'], caption=artist_info['title'])
-        
-        with cols[1]:  # Right column for the biography
-            st.write('**Biography:**', artist_info['extract'])
-    else:
-        st.error("No information found for this artist.")
-    
-    display_recommendations(artist_name)
 
 def display_recommendations(artist_name):
     recommendations = recommend(artist_name)
@@ -72,7 +59,30 @@ def display_recommendations(artist_name):
                     st.session_state['selected_artist'] = artist
                     st.experimental_rerun()
 
-# List of artists for the sidebar
+
+def show_artist_info(artist_name):
+    artist_info = get_artist_info(artist_name)
+    if artist_info:
+        st.title(artist_name)
+        cols = st.columns(2)  
+        with cols[0]: 
+            if artist_info['image'] != 'No image available':
+                st.image(artist_info['image'], caption=artist_info['title'])
+        
+        with cols[1]:  
+            truncated_extract = ' '.join(artist_info['extract'].split()[:100])
+            if len(artist_info['extract'].split()) > 100:
+                truncated_extract += '...'
+            
+            st.write('**Biography:**')
+            st.write(truncated_extract)
+            st.write(f"[Read more on Wikipedia]({artist_info['full_url']})")
+    else:
+        st.error("No information found for this artist.")
+    
+    display_recommendations(artist_name)
+
+
 artist_list = ['Select an artist'] + sorted(artists['name'].unique())
 selected_artist = st.sidebar.selectbox(
     "Select an artist",
@@ -87,6 +97,6 @@ if 'selected_artist' not in st.session_state or selected_artist != 'Select an ar
 if st.session_state['selected_artist'] != 'Select an artist':
     show_artist_info(st.session_state['selected_artist'])
 else:
-    st.title('Who is your favorite artist?')
+    st.title('WHO IS YOUR FAVORITE ARTIST?')
     st.subheader('Select an artist from Renaissance to Modern, and see similar artists.')
-    st.image('assets/gogh.png')  # Adjust path as necessary
+    st.image('assets/gogh.png')
