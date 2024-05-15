@@ -75,7 +75,7 @@ The web app is divided into two main sections:
 - `dataset/`: Contains training, validation, and test datasets.
 
 ## Future Improvements
-
+- Enhance the accuracy of the art style classification model (currently experiencing classification issues).
 - Expand the model to recognize more art styles.
 - Enhance the similarity recommendation system with additional features.
 - Add more detailed artist information and multimedia content.
