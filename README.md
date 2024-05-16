@@ -1,6 +1,7 @@
 # ArtStyle & Artists WebApp
 
-<img src="assets/gogh.png" alt="workflow" width="70%">
+<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/c1b966b9bfbe4c339d2be6c5c66e70e0?sid=90626517-7fc3-4dc0-9426-60aaab4d944c" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
+
 
 
 Welcome to the ArtStyle & Artists WebApp! This project showcases my skills in PyTorch and NLP by leveraging machine learning and data science techniques to identify art styles from images and provide information about artists along with recommendations of similar artists.
